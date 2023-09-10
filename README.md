@@ -14,6 +14,12 @@ To get started with this project, follow these steps:
    git clone https://github.com/jawwad9899/nextjs-task-manager.git
    ```
 
+2. Run the following command:
+
+   ```bash
+   npm install
+   ```
+
 ## Dependencies
 
 Here are the main dependencies used in this project:
