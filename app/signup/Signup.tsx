@@ -2,10 +2,10 @@
 import Message from "@/components/Message";
 import axios from "axios";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-
+import { Oval } from "react-loader-spinner";
 export default function Signup() {
   const router = useRouter();
 
@@ -14,6 +14,8 @@ export default function Signup() {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(true);
 
   const onChangeHanlder = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormFields((prev) => {
@@ -21,11 +23,26 @@ export default function Signup() {
     });
   };
 
+  useEffect(() => {
+    if (
+      formFields.name.length > 3 &&
+      formFields.email.length > 3 &&
+      formFields.password.length > 3
+    ) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [formFields]);
+
   const onSignup = async () => {
     try {
+      setLoading(true);
       await axios.post("/api/user/signup", formFields);
       setFormFields({ name: "", email: "", password: "" });
+      setLoading(false);
       toast.success("Success!");
+
       setTimeout(() => {
         router.push("/login");
       }, 800);
@@ -103,9 +120,14 @@ export default function Signup() {
 
             <button
               onClick={onSignup}
-              className="text-white bg-indigo-600 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-800 rounded text-lg"
+              disabled={disabled}
+              className={`flex justify-center  items-center gap-2 text-white  border-0 py-2 px-6  rounded text-lg ${
+                disabled
+                  ? "bg-indigo-200"
+                  : "bg-indigo-600 focus:outline-none hover:bg-indigo-800"
+              }`}
             >
-              Signup
+              Signup {loading && <Oval color="#fff" width="30" height={20} />}
             </button>
             <p className="text-sm text-gray-500 mt-3 text-center">
               Already have an account?

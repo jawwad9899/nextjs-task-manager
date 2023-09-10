@@ -6,13 +6,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { revalidatePath } from "next/cache";
 
 export default function Page() {
   const router = useRouter();
   const [tasks, setTasks] = useState<any>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
+  const [imgLoading, setImgLoading] = useState<boolean>(true);
 
   useEffect(() => {
     (async function () {
@@ -80,7 +79,7 @@ export default function Page() {
                               {taskName}
                             </h5>
                           </a>
-                          {loading && <h1>Loading Image...</h1>}
+                          {imgLoading && <h1>Loading Image...</h1>}
                           <Image
                             src={img}
                             width={400}
@@ -89,9 +88,9 @@ export default function Page() {
                             loading="lazy"
                             alt="Image"
                             onLoad={() => {
-                              setLoading(false);
+                              setImgLoading(false);
                             }}
-                            onError={() => setLoading(false)}
+                            onError={() => setImgLoading(false)}
                           />
 
                           <p className="mb-3 font-normal text-gray-900 ">

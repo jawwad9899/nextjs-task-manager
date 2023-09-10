@@ -2,9 +2,10 @@
 import Link from "next/link";
 import Message from "@/components/Message";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { Oval } from "react-loader-spinner";
 
 export default function Login() {
   const router = useRouter();
@@ -13,6 +14,8 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(true);
 
   const onChangeHanlder = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormFields((prev) => {
@@ -20,10 +23,20 @@ export default function Login() {
     });
   };
 
+  useEffect(() => {
+    if (formFields.email.length > 3 && formFields.password.length > 3) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [formFields]);
+
   const onLogin = async () => {
     try {
+      setLoading(true);
       await axios.post("/api/user/login", formFields);
       toast.success("Successfully Logged In!");
+      setLoading(false);
       setTimeout(() => {
         router.push("/tasks/task");
       }, 800);
@@ -36,7 +49,7 @@ export default function Login() {
   return (
     <>
       <Message />
-      <section className=" body-font relative p-4">
+      <section className=" body-font relative ">
         <div className="container px-5 py-36 mx-auto flex sm:flex-nowrap flex-wrap">
           <div className="lg:w-1/3 md:w-1/2 bg-white flex flex-col md:ml-auto w-full md:py-8 mt-8 md:mt-0 mr-auto">
             <div className="flex justify-center">
@@ -88,9 +101,14 @@ export default function Login() {
 
             <button
               onClick={onLogin}
-              className="text-white bg-indigo-600 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-800 rounded text-lg"
+              disabled={disabled}
+              className={`flex justify-center  items-center gap-2 text-white  border-0 py-2 px-6  rounded text-lg ${
+                disabled
+                  ? "bg-indigo-200"
+                  : "bg-indigo-600 focus:outline-none hover:bg-indigo-800"
+              }`}
             >
-              Login
+              Login {loading && <Oval color="#fff" width="30" height={20} />}
             </button>
             <p className="text-sm text-gray-500 mt-3 text-center">
               Don{"'"}t have an account?
