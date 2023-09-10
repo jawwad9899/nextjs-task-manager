@@ -1,11 +1,5 @@
 import aboutSvg from "@/app/assets/about.svg";
 import Image from "next/image";
-import type { Metadata } from "next";
-
-export const metdata: Metadata = {
-  title: "About Us",
-  description: "This is about us page",
-};
 
 export default function About() {
   return (
