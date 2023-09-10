@@ -6,20 +6,20 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import {InfinitySpin } from "react-loader-spinner";
+
 
 export default function Page() {
   const router = useRouter();
   const [tasks, setTasks] = useState<any>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [imgLoading, setImgLoading] = useState<boolean>(true);
-  const [tasksLoading,setTasksLoading] = useState<boolean>(true);
+ 
   
   useEffect(() => {
     (async function () {
       const res = await axios.get("/api/tasks");
       setTasks(res.data.tasks);
-      setTasksLoading(true);
+
     })();
   }, []);
   
@@ -64,8 +64,7 @@ export default function Page() {
               </div>
 
               <div className="tasks flex flex-wrap gap-4 justify-around   p-4">
-                {tasksLoading && <InfinitySpin width="100" color="#4f46e5" />
-                {!tasksLoading && tasks.length === 0 && <h1>Empty!</h1>}
+              
                 {tasks
                     ?.filter((data: any) => {
                       return data.taskName
