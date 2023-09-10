@@ -11,7 +11,7 @@ To get started with this project, follow these steps:
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/jawwad9899/nextjs-task-manager.git``
    ```
 
 ## Dependencies
