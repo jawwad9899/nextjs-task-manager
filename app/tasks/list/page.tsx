@@ -6,22 +6,20 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { InfinitySpin } from "react-loader-spinner";
 
 export default function Page() {
   const router = useRouter();
   const [tasks, setTasks] = useState<any>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [imgLoading, setImgLoading] = useState<boolean>(true);
-  const [tasksLoading, setTasksLoading] = useState<boolean>(true);
 
   useEffect(() => {
     (async function () {
       const res = await axios.get("/api/tasks");
       setTasks(res.data.tasks);
-      setTasksLoading(false);
     })();
   }, []);
+  
   async function deleteTask(e: string) {
     try {
       let remains = tasks.filter((d: any) => {
@@ -63,38 +61,38 @@ export default function Page() {
               </div>
 
               <div className="tasks flex flex-wrap gap-4 justify-around   p-4">
-                {tasksLoading && <InfinitySpin width="120" color="#4f46e5" />}
-                {!tasksLoading && tasks.length === 0 && <h1>Empty!</h1>}
-                {tasks
-                  ?.filter((data: any) => {
-                    return data.taskName
-                      .toLowerCase()
-                      .includes(searchQuery.toLowerCase());
-                  })
-                  .map(({ taskName, taskDescription, _id, img }: any) => {
-                    return (
-                      <div
-                        key={taskName}
-                        className="max-w-sm w-fit h-fit  p-5    bg-indigo-200 hover:bg-indigo-400 transition-colors rounded-lg"
-                      >
-                        <a href="#">
-                          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900  ">
-                            {taskName}
-                          </h5>
-                        </a>
-                        {imgLoading && <h1>Loading Image...</h1>}
-                        <Image
-                          src={img}
-                          width={400}
-                          height={350}
-                          className="rounded-lg mb-5 mb-t-5"
-                          loading="lazy"
-                          alt="Image"
-                          onLoad={() => {
-                            setImgLoading(false);
-                          }}
-                          onError={() => setImgLoading(false)}
-                        />
+                {tasks.length === 0 && <h1>Loading...</h1>}
+                {tasks &&
+                  tasks
+                    ?.filter((data: any) => {
+                      return data.taskName
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase());
+                    })
+                    .map(({ taskName, taskDescription, _id, img }: any) => {
+                      return (
+                        <div
+                          key={taskName}
+                          className="max-w-sm w-fit h-fit  p-5    bg-indigo-200 hover:bg-indigo-400 transition-colors rounded-lg"
+                        >
+                          <a href="#">
+                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900  ">
+                              {taskName}
+                            </h5>
+                          </a>
+                          {imgLoading && <h1>Loading Image...</h1>}
+                          <Image
+                            src={img}
+                            width={400}
+                            height={350}
+                            className="rounded-lg mb-5 mb-t-5"
+                            loading="lazy"
+                            alt="Image"
+                            onLoad={() => {
+                              setImgLoading(false);
+                            }}
+                            onError={() => setImgLoading(false)}
+                          />
 
                         <p className="mb-3 font-normal text-gray-900 ">
                           {taskDescription}
