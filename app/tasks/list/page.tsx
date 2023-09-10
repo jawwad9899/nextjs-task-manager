@@ -64,7 +64,7 @@ export default function Page() {
               </div>
 
               <div className="tasks flex flex-wrap gap-4 justify-around   p-4">
-                {tasksLoading && <InfinitySpin width="100" />
+                {tasksLoading && <InfinitySpin width="100" color="#4f46e5" />
                 {!tasksLoading && tasks.length === 0 && <h1>Empty!</h1>}
                 {tasks
                     ?.filter((data: any) => {
