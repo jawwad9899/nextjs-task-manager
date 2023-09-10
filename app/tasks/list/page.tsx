@@ -83,11 +83,13 @@ export default function Page() {
                             {taskName}
                           </h5>
                         </a>
-                        {imgLoading && <h1>Loading Image...</h1>}
+                        {imgLoading && (
+                          <InfinitySpin width="120" color="#4f46e5" />
+                        )}
                         <Image
                           src={img}
                           width={400}
-                          height={350}
+                          height={100}
                           className="rounded-lg mb-5 mb-t-5"
                           loading="lazy"
                           alt="Image"
