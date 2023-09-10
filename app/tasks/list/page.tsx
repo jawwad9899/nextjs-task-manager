@@ -61,9 +61,7 @@ export default function Page() {
               </div>
 
               <div className="tasks flex flex-wrap gap-4 justify-around   p-4">
-                {tasks.length === 0 ? (
-                  <h1>Empty!</h1>
-                ) : tasks ? (
+                {tasks ? (
                   tasks
                     ?.filter((data: any) => {
                       return data.taskName
